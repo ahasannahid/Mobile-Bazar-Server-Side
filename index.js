@@ -17,12 +17,27 @@ app.use(express.json());
 
 
 const uri = "mongodb+srv://mobileBazar:m0JkEgL3po6eHtDn@cluster0.qbh9oi5.mongodb.net/?retryWrites=true&w=majority";
-console.log(uri);
+// console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
     try{
         const usersCollection = client.db('mobileBazar').collection('users');
+        const categoryCollection = client.db('mobileBazar').collection('category');
+        const productsCollection = client.db('mobileBazar').collection('products');
+
+        app.get('/category', async (req, res) => {
+            const query = {};
+            const category = await categoryCollection.find(query).toArray();
+            res.send(category);
+        });
+
+        app.get('/products', async (req, res) => {
+            const query = {};
+            const products = await productsCollection.find(query).toArray();
+            res.send(products);
+        });
+
 
         app.post('/users', async (req, res) => {
             const user = req.body;
