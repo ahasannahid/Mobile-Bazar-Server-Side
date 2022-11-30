@@ -77,12 +77,12 @@ async function run() {
             res.send({ isSeller: user?.category === 'Seller' });
         });
 
-        // app.get('/users/admin/:email', async (req, res) => {
+        // app.get('/users/buyer/:email', async (req, res) => {
         //     const email = req.params.email;
         //     console.log(email);
         //     const query = { email };
         //     const user = await usersCollection.findOne(query);
-        //     res.send({ isBuyer: user?.category === 'uyer' });
+        //     res.send({ isBuyer: user?.category === 'Buyer' });
         // });
     }
     finally {
