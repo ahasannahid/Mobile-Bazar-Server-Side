@@ -25,6 +25,7 @@ async function run() {
         const usersCollection = client.db('mobileBazar').collection('users');
         const categoryCollection = client.db('mobileBazar').collection('category');
         const productsCollection = client.db('mobileBazar').collection('products');
+        const bookingCollection = client.db('mobileBazar').collection('booking');
 
         app.get('/category', async (req, res) => {
             const query = {};
@@ -60,10 +61,16 @@ async function run() {
             res.send(result);
         });
 
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingCollection.insertOne(booking);
+            res.send(result);
+        });
+
 
         app.get('/users/admin/:email', async (req, res) => {
             const email = req.params.email;
-            console.log(email);
+            // console.log(email);
             const query = { email };
             const user = await usersCollection.findOne(query);
             res.send({ isAdmin: user?.category === 'admin' });
@@ -71,7 +78,7 @@ async function run() {
 
         app.get('/users/seller/:email', async (req, res) => {
             const email = req.params.email;
-            console.log(email);
+            // console.log(email);
             const query = { email };
             const user = await usersCollection.findOne(query);
             res.send({ isSeller: user?.category === 'Seller' });
