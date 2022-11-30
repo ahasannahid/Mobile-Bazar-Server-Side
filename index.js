@@ -21,7 +21,7 @@ const uri = "mongodb+srv://mobileBazar:m0JkEgL3po6eHtDn@cluster0.qbh9oi5.mongodb
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
-    try{
+    try {
         const usersCollection = client.db('mobileBazar').collection('users');
         const categoryCollection = client.db('mobileBazar').collection('category');
         const productsCollection = client.db('mobileBazar').collection('products');
@@ -38,13 +38,52 @@ async function run() {
             res.send(products);
         });
 
+        // app.get('/category/:name', (req, res) => {
+        //     const category = req.params.name;
+        //     // console.log(category);
+
+        //     const query = {
+        //         category:category
+        //     }
+
+        //     const category_products = productsCollection.filter(products => products.category === query)
+        //     res.send(category_products);
+        //     // const category_products = productsCollection.filter(products => products.category === category);
+        //     // res.send(category_products);
+        // })
+
 
         app.post('/users', async (req, res) => {
             const user = req.body;
             // console.log(user);
             const result = await usersCollection.insertOne(user);
             res.send(result);
-        })
+        });
+
+
+        app.get('/users/admin/:email', async (req, res) => {
+            const email = req.params.email;
+            console.log(email);
+            const query = { email };
+            const user = await usersCollection.findOne(query);
+            res.send({ isAdmin: user?.category === 'admin' });
+        });
+
+        // app.get('/users/admin/:email', async (req, res) => {
+        //     const email = req.params.email;
+        //     console.log(email);
+        //     const query = { email };
+        //     const user = await usersCollection.findOne(query);
+        //     res.send({ isSeller: user?.category === 'Seller' });
+        // });
+
+        // app.get('/users/admin/:email', async (req, res) => {
+        //     const email = req.params.email;
+        //     console.log(email);
+        //     const query = { email };
+        //     const user = await usersCollection.findOne(query);
+        //     res.send({ isBuyer: user?.category === 'uyer' });
+        // });
     }
     finally {
 
