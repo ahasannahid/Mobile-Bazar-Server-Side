@@ -49,7 +49,19 @@ async function run() {
 
             const category_products = await productsCollection.find(query).toArray();
             res.send(category_products);
-        })
+        });
+
+        app.get('/role/:category', async (req, res) => {
+            const category = req.params.category;
+            console.log(category);
+
+            const query = {
+                category:category
+            }
+
+            const category_user = await usersCollection.find(query).toArray();
+            res.send(category_user);
+        });
 
         app.get('/bookings', async (req, res) => {
             const email = req.query.email;
@@ -82,13 +94,15 @@ async function run() {
             res.send({ isAdmin: user?.category === 'admin' });
         });
 
-        app.get('/users/seller/:email', async (req, res) => {
-            const email = req.params.email;
+        app.get('/role/:category:', async (req, res) => {
+            const role = req.params.category;
             // console.log(email);
             const query = { email };
-            const user = await usersCollection.findOne(query);
-            res.send({ isSeller: user?.category === 'Seller' });
+            const user = await usersCollection.find(query);
+            res.send({ isAdmin: user?.category === 'Seller' });
         });
+
+
 
         // app.get('/users/buyer/:email', async (req, res) => {
         //     const email = req.params.email;
