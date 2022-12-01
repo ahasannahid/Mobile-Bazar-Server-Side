@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // dbpassward = m0JkEgL3po6eHtDn
 // name = mobileBazar
@@ -94,23 +94,22 @@ async function run() {
             res.send({ isAdmin: user?.category === 'admin' });
         });
 
-        app.get('/role/:category:', async (req, res) => {
-            const role = req.params.category;
+        app.get('/users/seller/:email', async (req, res) => {
+            const email = req.params.email;
             // console.log(email);
             const query = { email };
-            const user = await usersCollection.find(query);
-            res.send({ isAdmin: user?.category === 'Seller' });
+            const user = await usersCollection.findOne(query);
+            res.send({ isSeller: user?.category === 'Seller' });
         });
 
+        app.delete('/users/:id', async (req,res) => {
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const result = await usersCollection.deleteOne(query);
+            res.send(result);
+        })
 
-
-        // app.get('/users/buyer/:email', async (req, res) => {
-        //     const email = req.params.email;
-        //     console.log(email);
-        //     const query = { email };
-        //     const user = await usersCollection.findOne(query);
-        //     res.send({ isBuyer: user?.category === 'Buyer' });
-        // });
+       
     }
     finally {
 
