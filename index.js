@@ -4,8 +4,6 @@ require('dotenv').config();
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
-// dbpassward = m0JkEgL3po6eHtDn
-// name = mobileBazar
 
 const app = express();
 
