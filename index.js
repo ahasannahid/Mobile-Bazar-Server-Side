@@ -39,19 +39,25 @@ async function run() {
             res.send(products);
         });
 
-        // app.get('/category/:name', (req, res) => {
-        //     const category = req.params.name;
-        //     // console.log(category);
+        app.get('/category/:name', async (req, res) => {
+            const category = req.params.name;
+            console.log(category);
 
-        //     const query = {
-        //         category:category
-        //     }
+            const query = {
+                category:category
+            }
 
-        //     const category_products = productsCollection.filter(products => products.category === query)
-        //     res.send(category_products);
-        //     // const category_products = productsCollection.filter(products => products.category === category);
-        //     // res.send(category_products);
-        // })
+            const category_products = await productsCollection.find(query).toArray();
+            res.send(category_products);
+        })
+
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email;
+
+            const query = { email: email };
+            const bookings = await bookingCollection.find(query).toArray();
+            res.send(bookings)
+        })
 
 
         app.post('/users', async (req, res) => {
